@@ -12,6 +12,7 @@ let size = Math.min(dimension[0],dimension[1])*0.9;
 
 for(i=1;i<=8;i++){
 	if(!(i%3)){
+	myCanvas.beginPath();
 	myCanvas.lineWidth = 3;
 	myCanvas.strokeStyle = "#FF0000";}
 	else{
@@ -21,9 +22,11 @@ for(i=1;i<=8;i++){
 	myCanvas.moveTo((size*i)/9,0)
 	myCanvas.lineTo((size*i)/9,size)
 	myCanvas.stroke()
+	myCanvas.closePath();
 }
 for(i=1;i<=8;i++){
 	if(!(i%3)){
+		myCanvas.beginPath();
 		myCanvas.lineWidth = 3;
 		myCanvas.strokeStyle = "#FF0000";
 	}
@@ -34,4 +37,5 @@ for(i=1;i<=8;i++){
 	myCanvas.moveTo(0,(size*i)/9)
 	myCanvas.lineTo(size,(size*i)/9)
 	myCanvas.stroke()
+	myCanvas.closePath();
 }
