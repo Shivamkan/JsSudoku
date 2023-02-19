@@ -14,29 +14,24 @@ function drawLine(canvas, start, end, width, color) {
 	canvas.closePath();
 }
 
-function drawText(canvas, pos, text, size, width, fill, color){
-	canvas.textAlign = 'start';
-	canvas.textBaseline='top';
+function drawText(canvas, pos, text, size, width, color="#FF0000", fill, textAlign='start', textBaseline='top'){
+	canvas.textAlign = textAlign;
+	canvas.textBaseline=textBaseline;
 	canvas.font = String(size)+"px sans-serif";
-	console.log(String(size)+"px sans-serif");
 	canvas.strokeStyle = color;
 	canvas.lineWidth = width;
-	if (fill!="" || fill!=null){
+	if (fill!="" && fill!=null && fill!=undefined){
 		canvas.fillStyle = fill;
 		canvas.fillText(text,...pos);
 	}
 	canvas.strokeText(text,...pos);
 }
 
-function randomChoice(arr) {
-    return arr[Math.floor(arr.length * Math.random())];
-}
-
 function sample(arr, length){
 	if(arr.length<length){throw "Too big"; return;}
 	let output=[];
 	while(output.length<length){
-		rand = randomChoice(arr);
+		rand = arr[Math.floor(arr.length * Math.random())];
 		if (!output.includes(rand)){
 			output.push(rand);
 		}
