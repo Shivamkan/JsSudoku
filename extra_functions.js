@@ -13,3 +13,56 @@ function drawLine(canvas, start, end, width, color) {
 	canvas.stroke();
 	canvas.closePath();
 }
+
+function drawText(canvas, pos, text, size, width, fill, color){
+	canvas.textAlign = 'start';
+	canvas.textBaseline='top';
+	canvas.font = String(size)+"px sans-serif";
+	console.log(String(size)+"px sans-serif");
+	canvas.strokeStyle = color;
+	canvas.lineWidth = width;
+	if (fill!="" || fill!=null){
+		canvas.fillStyle = fill;
+		canvas.fillText(text,...pos);
+	}
+	canvas.strokeText(text,...pos);
+}
+
+function randomChoice(arr) {
+    return arr[Math.floor(arr.length * Math.random())];
+}
+
+function sample(arr, length){
+	if(arr.length<length){throw "Too big"; return;}
+	let output=[];
+	while(output.length<length){
+		rand = randomChoice(arr);
+		if (!output.includes(rand)){
+			output.push(rand);
+		}
+	}
+	return output;
+}
+
+function range(start, stop, step) {
+    if (typeof stop == 'undefined') {
+        // one param defined
+        stop = start;
+        start = 0;
+    }
+
+    if (typeof step == 'undefined') {
+        step = 1;
+    }
+
+    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+        return [];
+    }
+
+    var result = [];
+    for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+        result.push(i);
+    }
+
+    return result;
+}
