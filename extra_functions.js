@@ -14,6 +14,18 @@ function drawLine(canvas, start, end, width, color) {
 	canvas.closePath();
 }
 
+function drawRect(canvas, start, size, color) {
+    if(color == null){
+        color = "#000000"
+    }
+
+    canvas.beginPath();
+    canvas.fillStyle = color;
+    canvas.rect(...start, ...size)
+    canvas.fill();
+    canvas.closePath();
+}
+
 function drawText(canvas, pos, text, size, width, color="#FF0000", fill, textAlign='start', textBaseline='top'){
 	canvas.textAlign = textAlign;
 	canvas.textBaseline=textBaseline;
@@ -125,4 +137,25 @@ function getAllUrlParams(url) {
   }
 
   return obj;
+}
+
+function deepCopy(obj) {
+    if (typeof obj == 'object') {
+        if (Array.isArray(obj)) {
+            var l = obj.length;
+            var r = new Array(l);
+            for (var i = 0; i < l; i++) {
+                r[i] = deepCopy(obj[i]);
+            }
+            return r;
+        } else {
+            var r = {};
+            r.prototype = obj.prototype;
+            for (var k in obj) {
+                r[k] = deepCopy(obj[k]);
+            }
+            return r;
+        }
+    }
+    return obj;
 }
