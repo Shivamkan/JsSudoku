@@ -109,12 +109,18 @@ function hide_numbers(board){
     let i
     let y
     let x
-    while(to_remove.length<56){
+    while(to_remove.length<=56){
         i = Math.floor(myrng()*81)
+        if(to_remove.includes(i)){continue}
         y = Math.floor(i/9)
         x = i%9
         board1[y][x] = 0
-        if(has_more_sol(board1,sol)){board1[y][x] = sol[y][x]}else{if(!to_remove.includes(i)){to_remove.push(i)}}
+        if(has_more_sol(deepCopy(board1),deepCopy(sol))) {
+            board1[y][x] = sol[y][x];
+            continue;
+        }else{
+            to_remove.push(i)
+        }
     }
     // console.log(to_remove)
     for(let k=0; k<to_remove.length-1; k++){
@@ -124,6 +130,8 @@ function hide_numbers(board){
     }
     return board1
 }
+
+
 function gen_board(){
     let board=[]
     for(let x=0;x<9; x++){
