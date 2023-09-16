@@ -109,18 +109,22 @@ function hide_numbers(board){
     let i
     let y
     let x
-    while(to_remove.length<=56){
+    let fail_safe = 0
+    while(to_remove.length<=50 && fail_safe<=400){
         i = Math.floor(myrng()*81)
+        fail_safe++
         if(to_remove.includes(i)){continue}
         y = Math.floor(i/9)
         x = i%9
         board1[y][x] = 0
         if(has_more_sol(deepCopy(board1),deepCopy(sol))) {
             board1[y][x] = sol[y][x];
-            continue;
         }else{
             to_remove.push(i)
         }
+    }
+    if(fail_safe>=300){
+        console.log("was unsuccessful")
     }
     // console.log(to_remove)
     for(let k=0; k<to_remove.length-1; k++){
