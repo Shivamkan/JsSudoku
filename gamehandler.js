@@ -30,8 +30,8 @@ function setup_Canvas() {
     myC.addEventListener('mousedown', click_handler)
     UIright = resizeCanvas(myC)
     reDrawBoard()
-    if(document.getElementById("solve_button")===null ||
-        document.getElementById("solve_button")===undefined){
+    if((document.getElementById("solve_button")===null ||
+        document.getElementById("solve_button")===undefined)&&url_parameters['type']==='solver'){
         let button = document.createElement('button')
         button.type = "button";
         button.id = 'solve_button';

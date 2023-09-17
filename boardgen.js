@@ -7,6 +7,8 @@
 //     [2,0,0,6,0,0,0,0,1],
 //     [0,4,8,0,0,0,6,0,0],
 //     [0,3,0,0,0,0,0,4,0]]
+// noinspection JSUnusedGlobalSymbols
+
 let myrng = new Math.seedrandom(getAllUrlParams()["seed"])
 // let boarda=[]
 // for(let x=0;x<9; x++){
@@ -78,7 +80,7 @@ function find_empty(bo){
 }
 function genrate_full_board(board){
     let empty = find_empty(board)
-    if(empty == false){
+    if(empty === false){
         return board;
     }
     let x = empty[1];let y=empty[0];
@@ -89,7 +91,7 @@ function genrate_full_board(board){
         values.splice(l,1)
         if (validate(board, value, empty)){
             board[y][x] = value;
-            if(genrate_full_board(board)!=false){
+            if(genrate_full_board(board)!==false){
                 return board;
             }
             board[y][x] = 0;
@@ -99,7 +101,7 @@ function genrate_full_board(board){
 }
 function has_more_sol(board, other_sol){
     let empty = find_empty(board)
-    if(empty == false){
+    if(empty === false){
         return (board.flat().toString() != other_sol.flat().toString());
     }
     let x = empty[1];let y=empty[0];
