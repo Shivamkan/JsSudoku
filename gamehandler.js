@@ -45,7 +45,7 @@ function setup_Canvas() {
         let button = document.getElementById('solve_button')
         button.style.left = pos[0]
         button.style.top = pos[1]
-    } else{
+    } else if(url_parameters['type']==='solver' && dimension[0]<dimension[1]){
         let pos = [parseFloat(myC.style.left), parseFloat(myC.style.top) + parseFloat(myC.height)+20]
         let button = document.getElementById('solve_button')
         button.style.left = pos[0]
