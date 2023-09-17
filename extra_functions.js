@@ -39,41 +39,6 @@ function drawText(canvas, pos, text, size, width, color="#FF0000", fill, textAli
 	canvas.strokeText(text,...pos);
 }
 
-function sample(arr, length){
-	if(arr.length<length){throw "Too big"; return;}
-	let output=[];
-	while(output.length<length){
-		rand = arr[Math.floor(arr.length * Math.random())];
-		if (!output.includes(rand)){
-			output.push(rand);
-		}
-	}
-	return output;
-}
-
-function range(start, stop, step) {
-    if (typeof stop == 'undefined') {
-        // one param defined
-        stop = start;
-        start = 0;
-    }
-
-    if (typeof step == 'undefined') {
-        step = 1;
-    }
-
-    if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
-        return [];
-    }
-
-    var result = [];
-    for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
-        result.push(i);
-    }
-
-    return result;
-}
-
 function getAllUrlParams(url) {
 
   // get query string from url (optional) or window

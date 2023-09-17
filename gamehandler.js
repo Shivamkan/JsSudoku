@@ -1,43 +1,76 @@
-let myC = document.getElementById("myCanvas");
+let myC;
+let url_parameters = getAllUrlParams()
 let dimension = [window.innerWidth, window.innerHeight];
-let myCanvas = myC.getContext("2d");
+let myCanvas;
 let size = Math.min(dimension[0], dimension[1]) * 0.9;
-let solution = gen_board();
-let board = hide_numbers(solution);
+let solution;
+let board;
 let UIright = true;
 let selected = null;
-let currentBoard = deepCopy(board)
+let currentBoard = gen_empty();
 
 
-function setup() {
-    dimension = [window.innerWidth, window.innerHeight];
-    size = Math.min(dimension[0], dimension[1]) * 0.9;
-    if (dimension[0] * 10 / 9 > dimension[1]) {
-        myC.width = size * 10 / 9;
-        myC.height = size;
-        myC.style.left = String(((dimension[0] - size * 10 / 9) / 2));
-        myC.style.top = String(((dimension[1] - size) / 2));
-        UIright = true;
-    } else {
-        myC.width = size;
-        myC.height = size * 10 / 9;
-        myC.style.left = String(((dimension[0] - size) / 2));
-        myC.style.top = String(((dimension[1] - size * 10 / 9) / 2));
-        UIright = false;
+function setup_Canvas() {
+    if(document.body.onresize === null || document.body.onresize === undefined){
+        document.body.onresize = setup_Canvas
     }
+    if(document.getElementById("myCanvas")!=null&&document.getElementById("myCanvas")!==undefined){
+        myC = document.getElementById("myCanvas");
+    }else{
+        let canv = document.createElement('canvas');
+        canv.id = 'myCanvas';
+        document.body.appendChild(canv);
+        myC = document.getElementById("myCanvas");
+        myC.style = "border:5px solid #000000;";
+    }
+    myC.style.position = "absolute";
+    myCanvas = myC.getContext("2d");
+
+    // noinspection JSCheckFunctionSignatures
+    myC.addEventListener('mousedown', click_handler)
+    UIright = resizeCanvas(myC)
     reDrawBoard()
-} //resizing canvas and centering it.
+    if(document.getElementById("solve_button")===null ||
+        document.getElementById("solve_button")===undefined){
+        let button = document.createElement('button')
+        button.type = "button";
+        button.id = 'solve_button';
+        button.textContent = "Solve Board";
+        button.onclick = solve;
+        button.style.position = "absolute";
+        document.body.appendChild(button);
+    }
+    if(url_parameters['type']==='solver' && dimension[0]>=dimension[1]){
+        let pos = [parseFloat(myC.style.left) + parseFloat(myC.width)+20,parseFloat(myC.style.top)]
+        let button = document.getElementById('solve_button')
+        button.style.left = pos[0]
+        button.style.top = pos[1]
+    } else{
+        let pos = [parseFloat(myC.style.left), parseFloat(myC.style.top) + parseFloat(myC.height)+20]
+        let button = document.getElementById('solve_button')
+        button.style.left = pos[0]
+        button.style.top = pos[1]
+        console.log('2')
+    }
+}
 
-myC.style.position = "absolute";
-setup();
-// drawSudokuGrid()
-// drawBoard(board, solution)
-// drawUI()
+function setup(){
+    if(url_parameters['type']==='game'){
+        solution = genrate_full_board(gen_empty());
+        board = hide_numbers(solution);
 
-myC.addEventListener('mousedown', function (e) {
+    }else if(url_parameters['type']==='solver'){
+        board = gen_empty()
+    }
+    currentBoard = deepCopy(board);
+    setup_Canvas()
+}
+
+// noinspection JSUnusedGlobalSymbols
+function click_handler(e) {
     let cursorPosition = getCursorPosition(myC, e)
     let temp = getGridPos(cursorPosition);
-    if(temp !== false){
+    if(temp !== false && temp!==null){
         // console.log(temp,selected)
         if(board[temp[0]][temp[1]] !== 0){
             selected = null;
@@ -64,31 +97,45 @@ myC.addEventListener('mousedown', function (e) {
             reDrawBoard();
         }
     }
-})
+}
 
-// window.addEventListener('resize', () => {
-//     setup();
-// })
+function resizeCanvas(Canvas){
+    dimension = [window.innerWidth, window.innerHeight];
+    size = Math.min(dimension[0], dimension[1]) * 0.9;
+    if (dimension[0] * 10 / 9 > dimension[1]) {
+        Canvas.width = size * 10 / 9;
+        Canvas.height = size;
+        Canvas.style.left = String(((dimension[0] - size * 10 / 9) / 2));
+        Canvas.style.top = String(((dimension[1] - size) / 2));
+        return true;//return if ui(button) should be on right
+    } else {
+        Canvas.width = size;
+        Canvas.height = size * 10 / 9;
+        Canvas.style.left = String(((dimension[0] - size) / 2));
+        Canvas.style.top = String(((dimension[1] - size * 10 / 9) / 2));
+        return false;//return if ui(button) should be on bottom
+    }
+}
 
-
-function drawSudokuGrid() {
+function drawSudokuGrid(Canvas, dimension) {
+    let size = Math.min(dimension[0], dimension[1]) * 0.9
     for (let i = 1; i <= 9; i++) {
         if (i === 9) {
-            drawLine(myCanvas, [(size * i) / 9, 0], [(size * i) / 9, size], 5, "#000000");
-            drawLine(myCanvas, [0, (size * i) / 9], [size, (size * i) / 9], 5, "#000000");
+            drawLine(Canvas, [(size * i) / 9, 0], [(size * i) / 9, size], 5, "#000000");
+            drawLine(Canvas, [0, (size * i) / 9], [size, (size * i) / 9], 5, "#000000");
         } else if (!(i % 3)) {
-            drawLine(myCanvas, [(size * i) / 9, 0], [(size * i) / 9, size], 3, "#FF0000");
-            drawLine(myCanvas, [0, (size * i) / 9], [size, (size * i) / 9], 3, "#FF0000");
+            drawLine(Canvas, [(size * i) / 9, 0], [(size * i) / 9, size], 3, "#FF0000");
+            drawLine(Canvas, [0, (size * i) / 9], [size, (size * i) / 9], 3, "#FF0000");
         } else {
-            drawLine(myCanvas, [(size * i) / 9, 0], [(size * i) / 9, size]);
-            drawLine(myCanvas, [0, (size * i) / 9], [size, (size * i) / 9]);
+            drawLine(Canvas, [(size * i) / 9, 0], [(size * i) / 9, size]);
+            drawLine(Canvas, [0, (size * i) / 9], [size, (size * i) / 9]);
         }
     }
 }
 
 function reDrawBoard(){
     drawRect(myCanvas,[0,0],[size/0.9,size/0.9],'#FFFFFF');
-    drawSudokuGrid()
+    drawSudokuGrid(myCanvas, dimension)
     drawUI()
     drawBoard(board, currentBoard);
     if(selected !== null){
@@ -109,6 +156,7 @@ function clearSudokuBox(pos) {
     myCanvas.clearRect(x, y, width, height);
 }
 
+// noinspection JSUnusedGlobalSymbols
 function clearSudokuBoard() {
     for (let x = 0; x <= 8; x++) {
         for (let y = 0; y <= 8; y++) {
@@ -181,4 +229,9 @@ function getUIButton(cursorPos){
     }else{
         return Math.floor(cursorPos[0]/(size/9))+1
     }
+}
+
+function solve(){
+    currentBoard = (genrate_full_board(currentBoard))
+    reDrawBoard()
 }

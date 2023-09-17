@@ -18,6 +18,18 @@ let myrng = new Math.seedrandom(getAllUrlParams()["seed"])
 // }
 // let empty = deepCopy(boarda)
 
+function gen_empty(){
+    let board=[]
+    for(let x=0;x<9; x++){
+        let row = [];
+        for(let y = 0;y<9; y++){
+            row.push(0);
+        }
+        board.push([...row]);
+    }
+    return board;
+}
+
 function showboard(board){
     let out = [""]
     for(let y = 0; y<board.length; y++){
@@ -135,18 +147,6 @@ function hide_numbers(board){
     return board1
 }
 
-
-function gen_board(){
-    let board=[]
-    for(let x=0;x<9; x++){
-        let row = [];
-        for(let y = 0;y<9; y++){
-            row.push(0);
-        }
-        board.push([...row]);
-    }
-    return genrate_full_board(board)
-}
 
 // let sol1 = genrate_full_board(boarda)
 // // showboard(sol1)
