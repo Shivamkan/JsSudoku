@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+  
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+  <title>Sudoku</title>
+
+  
+  
+  <script>
+function verify(){
+  if(document.options.seed.value=="--leave blank for random--"){
+    document.options.seed.value=Math.random();
+    return true;
+  }
+}
+  </script>
+</head>
+<body onload="document.options.seed.value='--leave blank for random--'">
+<h1 style="text-align: center;"><big><big>SUDOKU</big></big></h1>
+
+<div style="text-align: right;">
+<h6>by ShivamKantPrasad</h6>
+</div>
+
+<form method="get" action="game.html" name="options"> <br>
+  <table style="text-align: left; width: 60%; margin-left: auto; margin-right: auto;" border="0" cellpadding="2" cellspacing="2">
+    <tbody>
+      <tr>
+        <td style="vertical-align: top; width: 20%;">Play type<br>
+        </td>
+        <td style="vertical-align: top; width: 80%;">
+        <select name="type">
+        <option>game</option>
+        <option>solver</option>
+        </select>
+        <br>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;">Seed<br>
+        </td>
+        <td style="vertical-align: top;"><input onblur="if(value===''||value===null||value===undefined){value='--leave blank for random--'}" onfocus="value=''" size="50" value="--leave blank for random--" name="seed"><br>
+        </td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;"><br>
+        </td>
+        <td style="vertical-align: top;"><input onclick="verify()" value="Start game" type="submit"><input
+                name="reset" value="Reset Options" type="reset"><br>
+        </td>
+        <td style="vertical-align: top;"><br>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+</form>
+
+<br>
+
+<br>
+</body></html>
